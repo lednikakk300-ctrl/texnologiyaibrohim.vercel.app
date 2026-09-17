@@ -1,0 +1,8 @@
+{
+  "name": "TEXNOLOGIYA",
+  "description": "Zamonaviy, interaktiv va to‘liq funksional ta’limiy texnologiya platformasi",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
