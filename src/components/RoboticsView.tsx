@@ -2,11 +2,12 @@ import React, { useState } from 'react';
 import { motion } from 'motion/react';
 import { 
   Bot, Cpu, Copy, Check, Terminal, CircuitBoard, 
-  Wrench, Layers, Zap, Info, ChevronRight, Activity, Radio, Sun, Hand, Sparkles
+  Wrench, Layers, Zap, Info, ChevronRight, Activity, Radio, Sun, Hand, Sparkles, Gamepad2
 } from 'lucide-react';
 import { Language, ThemeMode, ArduinoProject, RoboticsComponent } from '../types';
 import { arduinoProjectsData, roboticsComponentsData } from '../data/roboticsData';
 import { soundFx } from '../utils/audio';
+import { GamesView } from './GamesView';
 
 interface RoboticsViewProps {
   language: Language;
@@ -17,7 +18,7 @@ export const RoboticsView: React.FC<RoboticsViewProps> = ({
   language,
   theme,
 }) => {
-  const [activeTab, setActiveTab] = useState<'projects' | 'theory'>('projects');
+  const [activeTab, setActiveTab] = useState<'projects' | 'theory' | 'game'>('projects');
   const [selectedProjectId, setSelectedProjectId] = useState<string>(arduinoProjectsData[0].id);
   const [copiedCode, setCopiedCode] = useState(false);
   const isDark = theme === 'dark';
@@ -94,6 +95,22 @@ export const RoboticsView: React.FC<RoboticsViewProps> = ({
         >
           <Bot className="w-4 h-4" />
           <span>Robot Tuzilishi & Asoslari</span>
+        </button>
+
+        <button
+          id="tab-arduino-game"
+          onClick={() => {
+            soundFx.playClick();
+            setActiveTab('game');
+          }}
+          className={`flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+            activeTab === 'game'
+              ? 'bg-gradient-to-r from-cyan-500 to-teal-400 text-slate-950 font-black shadow-md'
+              : 'text-cyan-500 hover:text-cyan-400'
+          }`}
+        >
+          <Gamepad2 className="w-4 h-4" />
+          <span>🎮 Arduino O‘yini (Simulyator)</span>
         </button>
       </div>
 
@@ -342,6 +359,21 @@ export const RoboticsView: React.FC<RoboticsViewProps> = ({
               })}
             </div>
           </div>
+        </motion.div>
+      )}
+
+      {/* Mode 3: Interactive Arduino & Robotics Game */}
+      {activeTab === 'game' && (
+        <motion.div
+          initial={{ opacity: 0, y: 15 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.3 }}
+        >
+          <GamesView
+            language={language}
+            theme={theme}
+            initialGame="arduino"
+          />
         </motion.div>
       )}
     </div>

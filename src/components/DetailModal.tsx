@@ -1,12 +1,33 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { 
   X, Heart, History, Cog, ThumbsUp, ThumbsDown, 
-  MapPin, Sparkles, Share2, Check
+  MapPin, Sparkles, Share2, Check, Volume2, VolumeX, Calendar
 } from 'lucide-react';
 import { TechnologyItem, Language, ThemeMode } from '../types';
 import { translations } from '../translations';
 import { soundFx } from '../utils/audio';
+
+const TECH_CREATION_YEARS: Record<string, number | string> = {
+  computer: 1945,
+  smartphone: 1992,
+  internet: 1969,
+  ai: 1956,
+  robotics: 1954,
+  cloud: 2006,
+  cybersecurity: 1971,
+  blockchain: 2008,
+  quantum: 1981,
+  fiveg: 2019,
+  iot: 1999,
+  vr_ar: 1968,
+  three_d_print: 1984,
+  ev: 1832,
+  biotech: 1973,
+  nanotech: 1959,
+  bluetooth: 1994,
+  voice_message: 1979
+};
 
 interface DetailModalProps {
   item: TechnologyItem | null;
@@ -25,9 +46,19 @@ export const DetailModal: React.FC<DetailModalProps> = ({
   isFavorite,
   onToggleFavorite,
 }) => {
-  const [copied, setCopied] = React.useState(false);
+  const [copied, setCopied] = useState(false);
+  const [isSpeaking, setIsSpeaking] = useState(false);
   const t = translations[language];
   const isDark = theme === 'dark';
+
+  // Stop speech if modal closes or item changes
+  useEffect(() => {
+    return () => {
+      if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
+      }
+    };
+  }, [item]);
 
   if (!item) return null;
 
@@ -37,9 +68,55 @@ export const DetailModal: React.FC<DetailModalProps> = ({
   const funFactsList = item.funFacts || (item.funFact ? [item.funFact] : []);
   const title = item.localizedName?.[language] || item.title || item.name;
 
+  // Creation Year lookup
+  const creationYear = TECH_CREATION_YEARS[item.id] || 
+    (item.history?.[language]?.match(/\b(18\d{2}|19\d{2}|20\d{2})\b/)?.[0] || 'XX asrda');
+
+  const handleToggleVoice = () => {
+    soundFx.playClick();
+    if (typeof window === 'undefined' || !('speechSynthesis' in window)) {
+      alert("Qurilmangizda brauzer ovozli o‘qish (TTS) funksiyasi qo‘llab-quvvatlanmaydi.");
+      return;
+    }
+
+    if (isSpeaking) {
+      window.speechSynthesis.cancel();
+      setIsSpeaking(false);
+      return;
+    }
+
+    window.speechSynthesis.cancel();
+
+    // Construct voice message explicitly stating when it was created:
+    let speechText = "";
+    if (language === 'uz') {
+      speechText = `${title} haqida ovozli ma'lumot. Ushbu texnologiya birinchi marta ${creationYear}-yilda yaratilgan. Qisqacha tavsifi: ${item.shortDesc?.[language] || ''}. Tarixi: ${item.history?.[language] || ''}`;
+    } else if (language === 'ru') {
+      speechText = `Голосовое сообщение о технологии ${title}. Эта технология была впервые создана в ${creationYear} году. Описание: ${item.shortDesc?.[language] || ''}. История: ${item.history?.[language] || ''}`;
+    } else {
+      speechText = `Voice message regarding ${title}. This technology was first created in the year ${creationYear}. Summary: ${item.shortDesc?.[language] || ''}. History: ${item.history?.[language] || ''}`;
+    }
+
+    const utterance = new SpeechSynthesisUtterance(speechText);
+    utterance.rate = 1.0;
+    utterance.pitch = 1.0;
+    utterance.lang = language === 'uz' ? 'uz-UZ' : language === 'ru' ? 'ru-RU' : 'en-US';
+
+    utterance.onend = () => {
+      setIsSpeaking(false);
+    };
+
+    utterance.onerror = () => {
+      setIsSpeaking(false);
+    };
+
+    setIsSpeaking(true);
+    window.speechSynthesis.speak(utterance);
+  };
+
   const handleCopyShare = () => {
     soundFx.playClick();
-    const text = `${title} - TEXNOLOGIYA Platformasi: ${item.shortDesc?.[language] || ''}`;
+    const text = `${title} (${creationYear}-yilda yaratilgan) - TEXNOLOGIYA Platformasi: ${item.shortDesc?.[language] || ''}`;
     navigator.clipboard?.writeText(text);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
@@ -77,6 +154,19 @@ export const DetailModal: React.FC<DetailModalProps> = ({
             
             {/* Top Close & Favorite Actions */}
             <div className="absolute top-4 right-4 flex items-center gap-2 z-10">
+              <button
+                id="modal-voice-btn"
+                onClick={handleToggleVoice}
+                className={`p-2.5 rounded-full backdrop-blur-md transition-all cursor-pointer ${
+                  isSpeaking
+                    ? 'bg-cyan-500 text-slate-950 font-black animate-pulse shadow-lg shadow-cyan-500/40'
+                    : 'bg-slate-900/80 hover:bg-slate-900 text-cyan-300'
+                }`}
+                title="Ovozli xabar: qachon yaratilganini tinglash"
+              >
+                {isSpeaking ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4" />}
+              </button>
+
               <button
                 id="modal-share-btn"
                 onClick={handleCopyShare}
@@ -116,9 +206,15 @@ export const DetailModal: React.FC<DetailModalProps> = ({
 
             {/* Title & Badge on Image */}
             <div className="absolute bottom-4 left-4 sm:left-6 right-4 z-10">
-              <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold bg-cyan-500/20 text-cyan-300 border border-cyan-500/30 backdrop-blur-md mb-2">
-                {item.category}
-              </span>
+              <div className="flex flex-wrap items-center gap-2 mb-2">
+                <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold bg-cyan-500/20 text-cyan-300 border border-cyan-500/30 backdrop-blur-md">
+                  {item.category}
+                </span>
+                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-amber-500/20 text-amber-300 border border-amber-500/30 backdrop-blur-md">
+                  <Calendar className="w-3.5 h-3.5" />
+                  <span>{creationYear}-yilda yaratilgan</span>
+                </span>
+              </div>
               <h2 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
                 {title}
               </h2>
@@ -128,6 +224,50 @@ export const DetailModal: React.FC<DetailModalProps> = ({
           {/* Scrollable Content Body */}
           <div className="p-4 sm:p-6 overflow-y-auto space-y-6">
             
+            {/* Ovozli Xabar Player Banner */}
+            <div className={`p-4 rounded-2xl border flex items-center justify-between gap-4 transition-all ${
+              isSpeaking
+                ? 'bg-cyan-500/15 border-cyan-500/40 shadow-lg shadow-cyan-500/10'
+                : isDark ? 'bg-slate-950/60 border-slate-800' : 'bg-cyan-50/70 border-cyan-200'
+            }`}>
+              <div className="flex items-center gap-3">
+                <button
+                  id="btn-play-voice-announce"
+                  onClick={handleToggleVoice}
+                  className={`w-11 h-11 rounded-2xl flex items-center justify-center transition-all cursor-pointer ${
+                    isSpeaking 
+                      ? 'bg-cyan-500 text-slate-950 shadow-md animate-pulse font-black' 
+                      : 'bg-slate-800 text-cyan-400 hover:bg-slate-700'
+                  }`}
+                  title="Ovozli xabarni eshitish"
+                >
+                  {isSpeaking ? <VolumeX className="w-5 h-5" /> : <Volume2 className="w-5 h-5" />}
+                </button>
+                <div>
+                  <div className="text-xs sm:text-sm font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                    <span>Ovozli xabar: {title}</span>
+                    <span className="text-[10px] px-2 py-0.5 rounded-full bg-cyan-500/20 text-cyan-300 font-mono font-bold">
+                      {creationYear}-yil
+                    </span>
+                  </div>
+                  <div className="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5">
+                    {isSpeaking 
+                      ? "Ovozli ma'lumot (qachon yaratilgani va tarixi) o‘qilmoqda..." 
+                      : "Bosib, texnologiya qachon yaratilgani va to‘liq ovozli sharhni tinglang"}
+                  </div>
+                </div>
+              </div>
+
+              {isSpeaking && (
+                <div className="flex items-center gap-1 h-5 pr-2">
+                  <span className="w-1 h-3 bg-cyan-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
+                  <span className="w-1 h-5 bg-cyan-400 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
+                  <span className="w-1 h-4 bg-cyan-400 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
+                  <span className="w-1 h-2 bg-cyan-400 rounded-full animate-bounce" style={{ animationDelay: '450ms' }} />
+                </div>
+              )}
+            </div>
+
             {/* Overview Short Description */}
             <div className={`p-4 rounded-2xl border ${
               isDark ? 'bg-slate-950/60 border-slate-800' : 'bg-slate-50 border-slate-200'

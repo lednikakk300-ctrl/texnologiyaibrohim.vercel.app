@@ -40,6 +40,7 @@ export const Navbar: React.FC<NavbarProps> = ({
     { id: 'devices', label: t.navDevices },
     { id: 'programming', label: t.navProgramming },
     { id: 'robotics', label: t.navRobotics },
+    { id: 'games', label: t.navGames || 'O‘yinlar' },
     { id: 'ai', label: t.navAI },
     { id: 'internet', label: t.navInternet },
     { id: 'security', label: t.navSecurity },

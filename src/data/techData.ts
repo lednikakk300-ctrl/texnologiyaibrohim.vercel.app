@@ -609,6 +609,78 @@ export const technologiesData: TechnologyItem[] = [
     funFacts: [
       { uz: 'Bluetooth logotipi qadimgi skandinav runalari “H” (Hagall) va “B” (Bjarkan) birlashmasidan kelib chiqqan!', ru: 'Логотип Bluetooth объединяет две скандинавские руны: Хагалл (H) и Бьяркан (B)!', en: 'The famous Bluetooth icon is a bindrune combining the Younger Futhark runes for Harald Bluetooth’s initials (H and B)!' }
     ]
+  },
+  {
+    id: 'voice_message',
+    name: 'Ovozli Xabar',
+    localizedName: { uz: 'Ovozli Xabar', ru: 'Голосовое сообщение', en: 'Voice Messaging' },
+    category: 'digital',
+    icon: 'Mic',
+    tags: ['Ovoz', '1979-yil', 'Aloqa', 'Audio', 'Messenjer'],
+    shortDesc: {
+      uz: 'Inson ovozini raqamlashtirib, saqlab va tarmoq orqali qabul qiluvchiga yetkazuvchi asinxron audio aloqa texnologiyasi.',
+      ru: 'Технология асинхронной голосовой связи, передающая оцифрованные аудиозаписи через телекоммуникационные сети.',
+      en: 'Asynchronous voice communication technology storing and transmitting digitized audio over telecommunication networks.'
+    },
+    history: {
+      uz: 'Ovozli xabar tizimi 1979-yilda Gordon Metyus (Gordon Matthews) tomonidan kashf etilgan va birinchi VMX (Voice Message Express) tizimi sifatida patentlangan. 1980-yillarda ofis telefonlarida keng ommalashgan, bugun esa Telegram va WhatsApp kabi barcha messenjerlarning ajralmas qismiga aylangan.',
+      ru: 'Система голосовых сообщений (Voicemail) была изобретена в 1979 году Гордоном Мэтьюсом, основавшим компанию VMX. В 1980-х годах она завоевала корпоративные АТС, а сегодня является стандартом в мессенджерах.',
+      en: 'Pioneered in 1979 by Gordon Matthews with his Voice Message Express (VMX) system patent, voice messaging revolutionized corporate telecommunications before becoming ubiquitous in modern chat apps.'
+    },
+    howItWorks: {
+      uz: 'Mikrofon ovoz to‘lqinlarini analog-raqamli konvertor (ADC) orqali siqilgan audio formatga (masalan, Opus yoki AAC) aylantiradi va server orqali boshqa qurilmaga uzatadi.',
+      ru: 'Микрофон преобразует акустические колебания в цифровой поток, кодирует в компактный формат (Opus/AAC) и передает по IP-сети.',
+      en: 'A microphone converts acoustic pressure waves into electrical signals, digitized via ADC into compressed audio packets sent via TCP/UDP.'
+    },
+    advantages: [
+      { uz: 'Matn terishdan bir necha barobar tez va hissiyotlarni yetkazadi', ru: 'Быстрее набора текста и передает живые эмоции интонации', en: 'Significantly faster than typing with natural human emotion' },
+      { uz: 'Qo‘llar band bo‘lgan paytda (masalan, mashina haydashda) qulay', ru: 'Удобство на ходу и в ситуациях, когда руки заняты', en: 'Hands-free convenience during driving and multitasking' }
+    ],
+    disadvantages: [
+      { uz: 'Shovqinli joylarda yoki majlislarda tinglash noqulay', ru: 'Неудобно слушать в шумных местах или на совещаниях без наушников', en: 'Inconvenient to listen to in quiet or noisy public spaces without earphones' }
+    ],
+    whereUsed: [
+      { uz: 'Telegram, WhatsApp, iMessage, smartfon ovozli pochtasi', ru: 'Мессенджеры Telegram, WhatsApp, голосовая почта операторов', en: 'Modern messaging applications, voicemail systems, smart assistants' }
+    ],
+    funFacts: [
+      { uz: 'Ixtirochi Gordon Metyus o‘zining VMX tizimini birinchi marta 1980-yilda Texasdagi yirik korporatsiyaga sotgan va AQShda 35 dan ortiq patent olgan!', ru: 'Изобретатель Гордон Мэтьюс продал свою первую коммерческую систему VMX в 1980 году и получил более 35 патентов!', en: 'Gordon Matthews sold his first operational VMX system in 1980 and holds over 35 patents in speech and telephony technology!' }
+    ]
+  },
+  {
+    id: 'arduino',
+    name: 'Arduino',
+    localizedName: { uz: 'Arduino', ru: 'Arduino', en: 'Arduino' },
+    category: 'hardware',
+    icon: 'Cpu',
+    tags: ['Mikrokontroller', '2005-yil', 'Robot', 'Sensor', 'Dasturlash'],
+    shortDesc: {
+      uz: 'Ochiq manbali elektron platforma bo‘lib, mikrokontrollerlar orqali sensorlar, dvigatellar va robotlarni oson dasturlash imkonini beradi.',
+      ru: 'Аппаратно-программная платформа для быстрой разработки электронных устройств и роботов.',
+      en: 'An open-source electronics platform based on easy-to-use hardware and software for creating interactive projects.'
+    },
+    history: {
+      uz: 'Arduino 2005-yilda Italiyaning Ivrea shahridagi dizayn institutida Massimo Banzi, David Cuartielles va ularning hamkasblari tomonidan talabalar uchun arzon mikrokontroller yaratish maqsadida ishlab chiqilgan. Ivrea shahzodasi Arduin sharafiga nomlangan.',
+      ru: 'Создана в 2005 году в итальянском городе Ивреа Массимо Банци и коллегами. Названа в честь средневекового короля Ардуина.',
+      en: 'Created in 2005 at the Interaction Design Institute Ivrea in Italy by Massimo Banzi and team to give students an inexpensive microcontroller.'
+    },
+    howItWorks: {
+      uz: 'ATmega328P mikrochipiga C++ tilida yozilgan dastur USB orqali yuklanadi. Chip pinlari orqali tashqi sensorlardan ma’lumot oladi va aktuatorlarni boshqaradi.',
+      ru: 'Микроконтроллер выполняет скетчи на C++, опрашивает цифровые и аналоговые датчики и управляет сервоприводами и реле.',
+      en: 'The ATmega microcontroller executes C++ firmware sketches, reading inputs from digital/analog sensors to drive actuators.'
+    },
+    advantages: [
+      { uz: 'Ochiq manbali, arzon va o‘rganish juda oson', ru: 'Открытый исходный код, доступность и простота изучения', en: 'Open-source, highly affordable, and beginner friendly' },
+      { uz: 'Minglab tayyor kutubxonalar va ulkan muhandislar hamjamiyati', ru: 'Тысячи готовых библиотек и всемирное сообщество мейкеров', en: 'Vast open libraries and massive global maker community' }
+    ],
+    disadvantages: [
+      { uz: 'Katta sun’iy intellekt yoki video grafikani qayta ishlash uchun xotirasi kam', ru: 'Ограниченная вычислительная память для тяжелых видеопотоков', en: 'Constrained compute and RAM for heavy video processing compared to Raspberry Pi' }
+    ],
+    whereUsed: [
+      { uz: 'Robototexnika, aqlli uylar, dronlar, 3D printerlar, meteorologik stansiyalar', ru: 'Робототехника, умный дом, метеостанции, дроны, 3D-принтеры', en: 'Robotics, home automation, IoT sensors, weather monitors, educational kits' }
+    ],
+    funFacts: [
+      { uz: 'Arduino nomi Massimo Banzi va uning do‘stlari tez-tez yig‘ilib turadigan Ivreadagi "Bar di Re Arduino" kafesi nomidan olingan!', ru: 'Название Arduino происходит от бара «Bar di Re Arduino», где часто собирались создатели проекта!', en: 'Arduino was named after a local pub in Ivrea, "Bar di Re Arduino", where the founders used to meet!' }
+    ]
   }
 ];
 
@@ -630,6 +702,8 @@ const techImages: Record<string, string> = {
   biotech: 'https://images.unsplash.com/photo-1532187863486-abf9dbad1b69?w=600&auto=format&fit=crop&q=80',
   nanotech: 'https://images.unsplash.com/photo-1507668077129-56e32842fceb?w=600&auto=format&fit=crop&q=80',
   bluetooth: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=600&auto=format&fit=crop&q=80',
+  voice_message: 'https://images.unsplash.com/photo-1590602847861-f357a9332bbc?w=600&auto=format&fit=crop&q=80',
+  arduino: 'https://images.unsplash.com/photo-1553406830-ef2513450d76?w=600&auto=format&fit=crop&q=80',
 };
 
 technologiesData.forEach((item) => {

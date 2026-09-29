@@ -15,6 +15,7 @@ import { TestView } from './components/TestView';
 import { AboutTechView } from './components/AboutTechView';
 import { FavoritesView } from './components/FavoritesView';
 import { SettingsView } from './components/SettingsView';
+import { GamesView } from './components/GamesView';
 import { DetailModal } from './components/DetailModal';
 import { SearchBarModal } from './components/SearchBarModal';
 import { Footer } from './components/Footer';
@@ -24,7 +25,7 @@ import { technologiesData } from './data/techData';
 import { soundFx } from './utils/audio';
 
 // Home Page Featured Section Helper
-import { ArrowRight, Sparkles, Cpu, Code2, Bot, ShieldCheck, Zap } from 'lucide-react';
+import { ArrowRight, Sparkles, Cpu, Code2, Bot, ShieldCheck, Zap, Gamepad2 } from 'lucide-react';
 import { translations } from './translations';
 
 export default function App() {
@@ -251,6 +252,59 @@ export default function App() {
               </div>
             </section>
 
+            {/* Interactive Games Hub Banner */}
+            <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-12">
+              <div className={`rounded-3xl p-8 border shadow-xl relative overflow-hidden flex flex-col md:flex-row md:items-center justify-between gap-6 ${
+                isDark 
+                  ? 'bg-gradient-to-r from-cyan-950/40 via-slate-900 to-indigo-950/40 border-cyan-800/40' 
+                  : 'bg-gradient-to-r from-teal-50 via-cyan-50 to-indigo-50 border-cyan-200'
+              }`}>
+                <div className="max-w-2xl">
+                  <div className="flex items-center gap-2 text-cyan-400 font-bold text-xs uppercase tracking-wider mb-2">
+                    <Gamepad2 className="w-4 h-4" />
+                    <span>Amaliy O‘yinlar & Simulyator</span>
+                  </div>
+                  <h3 className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white mb-2">
+                    🎮 Arduino, App Inventor va Robot O‘yinlari!
+                  </h3>
+                  <p className="text-sm text-slate-600 dark:text-slate-300 leading-relaxed mb-4">
+                    Arduino platasida virtual simlar ulab LED, svetofor va servo motorni boshqaring, MIT App Inventor bloklarini terib mobil ilova yarating, hamda robot labirint missiyasini bajaring!
+                  </p>
+                  <div className="flex flex-wrap items-center gap-3">
+                    <button
+                      id="btn-home-play-arduino"
+                      onClick={() => {
+                        soundFx.playSuccess();
+                        setActivePage('games');
+                      }}
+                      className="inline-flex items-center gap-2 px-6 py-3 rounded-xl text-xs font-black bg-gradient-to-r from-cyan-500 to-teal-500 text-slate-950 shadow-lg shadow-cyan-500/25 hover:scale-105 transition-transform cursor-pointer"
+                    >
+                      <Cpu className="w-4 h-4" />
+                      <span>Arduino O‘yinini O‘ynash</span>
+                    </button>
+                    <button
+                      onClick={() => {
+                        soundFx.playClick();
+                        setActivePage('games');
+                      }}
+                      className="inline-flex items-center gap-2 px-5 py-3 rounded-xl text-xs font-bold bg-slate-800/80 hover:bg-slate-700 text-white border border-slate-700 cursor-pointer"
+                    >
+                      <span>Barcha 4 ta o‘yin</span>
+                      <ArrowRight className="w-3.5 h-3.5" />
+                    </button>
+                  </div>
+                </div>
+
+                <div className="p-4 rounded-2xl bg-slate-950/80 border border-cyan-500/30 text-center shrink-0 self-center">
+                  <div className="w-16 h-16 rounded-2xl bg-cyan-500/20 text-cyan-400 flex items-center justify-center mx-auto mb-2 border border-cyan-500/30">
+                    <Gamepad2 className="w-8 h-8" />
+                  </div>
+                  <span className="text-xs font-mono font-bold text-cyan-300 block">ARDUINO UNO SIM</span>
+                  <span className="text-[10px] text-slate-400">Jonli Sxema & Kod</span>
+                </div>
+              </div>
+            </section>
+
             {/* Quick Interactive Exploration Hub Banner */}
             <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
               <div className={`rounded-3xl p-8 border shadow-xl relative overflow-hidden ${
@@ -318,6 +372,13 @@ export default function App() {
 
         {activePage === 'robotics' && (
           <RoboticsView
+            language={language}
+            theme={theme}
+          />
+        )}
+
+        {activePage === 'games' && (
+          <GamesView
             language={language}
             theme={theme}
           />

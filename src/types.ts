@@ -7,6 +7,7 @@ export type ActivePage =
   | 'devices' 
   | 'programming' 
   | 'robotics' 
+  | 'games'
   | 'scratch'
   | 'ai' 
   | 'internet' 
